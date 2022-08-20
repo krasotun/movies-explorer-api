@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
       validator(v) {
         return isLength(v, { min: 2, max: 30 });
       },
-      message: (props) => `${props.value}`,
+      message: (props) => `${props.value} ${USER_SCHEMA_VAL_MSGS.NAME}`,
     },
   },
 });
