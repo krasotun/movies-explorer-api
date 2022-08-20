@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 const isEmail = require('validator/lib/isEmail');
 const isLength = require('validator/lib/isLength');
-const { USER_SCHEMA_REQ_MSGS, USER_SCHEMA_VAL_MSGS } = require('../utils/constants');
+const bcrypt = require('bcryptjs');
+const AuthError = require('../errors/auth-error');
+const { USER_SCHEMA_REQ_MSGS, USER_SCHEMA_VAL_MSGS, AUTH_ERR_MSG } = require('../utils/constants');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -31,5 +33,20 @@ const userSchema = new mongoose.Schema({
     },
   },
 });
+userSchema.statics.findUserByCredentials = function func(email, password) {
+  return this.findOne({ email }).select('+password')
+    .then((user) => {
+      if (!user) {
+        throw new AuthError(AUTH_ERR_MSG);
+      }
+      return bcrypt.compare(password, user.password)
+        .then((matched) => {
+          if (!matched) {
+            throw new AuthError(AUTH_ERR_MSG);
+          }
+          return user;
+        });
+    });
+};
 
 module.exports = mongoose.model('user', userSchema);
