@@ -4,6 +4,7 @@ const { errors, celebrate, Joi } = require('celebrate');
 const { PORT, DB_ADDRESS, SRV_SIDE_ERR } = require('./utils/constants');
 const { createUser, login } = require('./controllers/users');
 const usersRouter = require('./routes/users');
+const moviesRouter = require('./routes/movies');
 const auth = require('./middlewares/auth');
 
 const app = express();
@@ -13,6 +14,7 @@ mongoose.connect(DB_ADDRESS, {
 });
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.post(
   '/signup',
@@ -37,6 +39,8 @@ app.post(
   login,
 );
 app.use('/', auth, usersRouter);
+app.use('/', auth, moviesRouter);
+
 app.use(errors());
 
 app.use((err, req, res, next) => {

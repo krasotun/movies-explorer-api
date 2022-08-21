@@ -52,3 +52,18 @@ module.exports = {
   SRV_SIDE_ERR,
   VAL_ERR,
 };
+
+const testMovie = `{
+  "country": "UK",
+  "director": "John Doe",
+  "duration": 120,
+  "year": "1984",
+  "description": "Классный фильм про",
+  "image": "https://pics.ru/micepick.jpg",
+  "trailerLink": "https://trailers.ru/nicetrailer.mov",
+  "thumbnail": "https://pics.ru/nicetumb.jpg",
+  "movieId": 255,
+  "nameRU": "Классное кино",
+  "nameEN": "Very nice movie"
+}`;
+
