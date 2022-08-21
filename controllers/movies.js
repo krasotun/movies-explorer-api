@@ -1,7 +1,10 @@
-const Movie = require('../models/user');
+const Movie = require('../models/movie');
 const BadRequestError = require('../errors/bad-request-error');
 const DuplicateDataError = require('../errors/duplicate-data-error');
-const { BAD_REQ_MSG, DUPLICATE_DATA_MSG, VAL_ERR } = require('../utils/constants');
+const NotFoundError = require('../errors/duplicate-data-error');
+const {
+  BAD_REQ_MSG, DUPLICATE_DATA_MSG, VAL_ERR, NOT_FOUND_ERR, CAST_ERR,
+} = require('../utils/constants');
 
 const createMovie = (req, res, next) => {
   const owner = req.user._id;
@@ -10,7 +13,6 @@ const createMovie = (req, res, next) => {
       res.status(201).send(data);
     })
     .catch((error) => {
-      console.log(error);
       if (error.name === VAL_ERR) {
         throw new BadRequestError(BAD_REQ_MSG);
       } else if (error.code === 11000) {
@@ -19,7 +21,22 @@ const createMovie = (req, res, next) => {
     })
     .catch(next);
 };
+const getMovies = (req, res, next) => {
+  const owner = req.user._id;
+  Movie.find({ owner })
+    .then((movies) => {
+      res.status(200).send(movies);
+    })
+    .catch((error) => {
+      if (error.name === CAST_ERR) {
+        throw new NotFoundError(NOT_FOUND_ERR);
+      }
+      next(error);
+    })
+    .catch(next);
+};
 
 module.exports = {
   createMovie,
+  getMovies,
 };

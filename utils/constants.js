@@ -36,7 +36,9 @@ const DUPLICATE_DATA_MSG = 'Данные уже есть в базе данны�
 const AUTH_ERR_MSG = 'Неверный e-mail или пароль';
 const NEED_AUTH_MSG = 'Необходима авторизация';
 const SRV_SIDE_ERR = 'На сервере произошла ошибка';
+const NOT_FOUND_ERR = 'Не найдено в базе данных';
 const VAL_ERR = 'ValidationError';
+const CAST_ERR = 'CastError';
 
 module.exports = {
   PORT,
@@ -51,6 +53,8 @@ module.exports = {
   NEED_AUTH_MSG,
   SRV_SIDE_ERR,
   VAL_ERR,
+  NOT_FOUND_ERR,
+  CAST_ERR,
 };
 
 const testMovie = `{
