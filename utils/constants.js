@@ -13,6 +13,8 @@ const BAD_REQ_MSG = 'Данные переданы неверно';
 const DUPLICATE_DATA_MSG = 'Данные уже есть в базе данных';
 const AUTH_ERR_MSG = 'Неверный e-mail или пароль';
 const NEED_AUTH_MSG = 'Необходима авторизация';
+const SRV_SIDE_ERR = 'На сервере произошла ошибка';
+const VAL_ERR = 'ValidationError';
 
 module.exports = {
   PORT,
@@ -23,4 +25,6 @@ module.exports = {
   DUPLICATE_DATA_MSG,
   AUTH_ERR_MSG,
   NEED_AUTH_MSG,
+  SRV_SIDE_ERR,
+  VAL_ERR,
 };

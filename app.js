@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors, celebrate, Joi } = require('celebrate');
-const { PORT, DB_ADDRESS } = require('./utils/constants');
+const { PORT, DB_ADDRESS, SRV_SIDE_ERR } = require('./utils/constants');
 const { createUser, login } = require('./controllers/users');
 const usersRouter = require('./routes/users');
 const auth = require('./middlewares/auth');
@@ -38,6 +38,12 @@ app.post(
 );
 app.use('/', auth, usersRouter);
 app.use(errors());
+
+app.use((err, req, res, next) => {
+  const { statusCode = 500, message } = err;
+  res.status(statusCode).send({ message: statusCode === 500 ? SRV_SIDE_ERR : message });
+  next();
+});
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console

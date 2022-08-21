@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const BadRequestError = require('../errors/bad-request-error');
 const DuplicateDataError = require('../errors/duplicate-data-error');
-const { BAD_REQ_MSG, DUPLICATE_DATA_MSG } = require('../utils/constants');
+const { BAD_REQ_MSG, DUPLICATE_DATA_MSG, VAL_ERR } = require('../utils/constants');
 
 const createUser = (req, res, next) => {
   const { email, name } = req.body;
@@ -19,7 +19,7 @@ const createUser = (req, res, next) => {
       });
     })
     .catch((error) => {
-      if (error.name === 'ValidationError') {
+      if (error.name === VAL_ERR) {
         throw new BadRequestError(BAD_REQ_MSG);
       } else if (error.code === 11000) {
         throw new DuplicateDataError(DUPLICATE_DATA_MSG);
@@ -37,7 +37,7 @@ const login = (req, res, next) => {
     })
     .catch(next);
 };
-const getCurrentUser = (req, res, next) => {
+const getCurrentUserInfo = (req, res, next) => {
   const userId = req.user._id;
   return User.findById(userId)
     .then((data) => {
@@ -48,7 +48,22 @@ const getCurrentUser = (req, res, next) => {
     })
     .catch(next);
 };
+const changeCurrentUserInfo = (req, res, next) => {
+  const { email, name } = req.body;
+  const userId = req.user._id;
+  User.findOneAndUpdate({ id: userId }, { email, name }, { new: true, runValidators: true })
+    .then((user) => {
+      res.status(200).send(user);
+    })
+    .catch((error) => {
+      if (error.name === VAL_ERR) {
+        throw new BadRequestError(BAD_REQ_MSG);
+      }
+      next(error);
+    })
+    .catch(next);
+};
 
 module.exports = {
-  createUser, login, getCurrentUser,
+  createUser, login, getCurrentUserInfo, changeCurrentUserInfo,
 };
