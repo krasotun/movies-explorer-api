@@ -37,8 +37,10 @@ const AUTH_ERR_MSG = 'Неверный e-mail или пароль';
 const NEED_AUTH_MSG = 'Необходима авторизация';
 const SRV_SIDE_ERR = 'На сервере произошла ошибка';
 const NOT_FOUND_ERR = 'Не найдено в базе данных';
+const NOT_FOUND_MOVIE_ERR = 'Фильм не найден в базе данных';
 const VAL_ERR = 'ValidationError';
 const CAST_ERR = 'CastError';
+const NO_ACCESS_ERR = 'Отказано в доступе';
 
 module.exports = {
   PORT,
@@ -55,6 +57,8 @@ module.exports = {
   VAL_ERR,
   NOT_FOUND_ERR,
   CAST_ERR,
+  NO_ACCESS_ERR,
+  NOT_FOUND_MOVIE_ERR,
 };
 
 const testMovie = `{
