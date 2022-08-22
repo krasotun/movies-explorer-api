@@ -1,11 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const { errors, celebrate, Joi } = require('celebrate');
+const { errors } = require('celebrate');
 const { PORT, DB_ADDRESS, SRV_SIDE_ERR } = require('./utils/constants');
 const { createUser, login } = require('./controllers/users');
 const usersRouter = require('./routes/users');
 const moviesRouter = require('./routes/movies');
 const auth = require('./middlewares/auth');
+const { validateSignup, validateSignin } = require('./middlewares/validator');
 
 const app = express();
 
@@ -16,28 +17,9 @@ mongoose.connect(DB_ADDRESS, {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.post(
-  '/signup',
-  celebrate({
-    body: Joi.object().keys({
-      email: Joi.string().required().email(),
-      password: Joi.string().required(),
-      name: Joi.string().min(2).max(30),
-    }),
-  }),
-  createUser,
-);
+app.post('/signup', validateSignup, createUser);
+app.post('/signin', validateSignin, login);
 
-app.post(
-  '/signin',
-  celebrate({
-    body: Joi.object().keys({
-      email: Joi.string().required().email(),
-      password: Joi.string().required(),
-    }),
-  }),
-  login,
-);
 app.use('/', auth, usersRouter);
 app.use('/', auth, moviesRouter);
 

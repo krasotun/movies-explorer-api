@@ -74,4 +74,3 @@ const testMovie = `{
   "nameRU": "Классное кино",
   "nameEN": "Very nice movie"
 }`;
-
