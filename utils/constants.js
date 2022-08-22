@@ -1,5 +1,5 @@
 const PORT = 3000;
-const DB_ADDRESS = 'mongodb://localhost:27017/diploma';
+const DB_ADDRESS = 'mongodb://localhost:27017/moviesdb';
 
 const USER_SCHEMA_REQ_MSGS = {
   EMAIL: 'Электронная почта (e-mail)  явлется обязательным полем для заполнения',

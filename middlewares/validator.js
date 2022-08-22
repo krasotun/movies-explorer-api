@@ -18,7 +18,7 @@ const validateMoviesPost = celebrate({
     nameEN: Joi.string().required(),
     image: Joi.string().required()
       .regex(/^(https?:\/\/)?([\da-z.-]+).([a-z.]{2,6})([/\w.-]*)*\/?$/),
-    trailer: Joi.string().required()
+    trailerLink: Joi.string().required()
       .regex(/^(https?:\/\/)?([\da-z.-]+).([a-z.]{2,6})([/\w.-]*)*\/?$/),
     thumbnail: Joi.string().required()
       .regex(/^(https?:\/\/)?([\da-z.-]+).([a-z.]{2,6})([/\w.-]*)*\/?$/),
