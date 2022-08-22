@@ -5,8 +5,11 @@ const { PORT, DB_ADDRESS, SRV_SIDE_ERR } = require('./utils/constants');
 const { createUser, login } = require('./controllers/users');
 const usersRouter = require('./routes/users');
 const moviesRouter = require('./routes/movies');
+const errorRouter = require('./routes/error');
 const auth = require('./middlewares/auth');
 const { validateSignup, validateSignin } = require('./middlewares/validator');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
+const rateLimiter = require('./middlewares/rateLimit');
 
 const app = express();
 
@@ -17,12 +20,16 @@ mongoose.connect(DB_ADDRESS, {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(requestLogger);
+app.use(rateLimiter);
 app.post('/signup', validateSignup, createUser);
 app.post('/signin', validateSignin, login);
 
 app.use('/', auth, usersRouter);
 app.use('/', auth, moviesRouter);
+app.all('*', errorRouter);
 
+app.use(errorLogger);
 app.use(errors());
 
 app.use((err, req, res, next) => {
