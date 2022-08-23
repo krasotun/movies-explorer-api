@@ -1,7 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
-const { PORT, DB_ADDRESS, SRV_SIDE_ERR } = require('./utils/constants');
+const cors = require('cors');
+const {
+  PORT, DB_ADDRESS, SRV_SIDE_ERR, ALLOWED_DOMAINS,
+} = require('./utils/constants');
 const { createUser, login } = require('./controllers/users');
 const usersRouter = require('./routes/users');
 const moviesRouter = require('./routes/movies');
@@ -12,6 +15,9 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const rateLimiter = require('./middlewares/rateLimit');
 
 const app = express();
+app.use(cors({
+  origin: ALLOWED_DOMAINS,
+}));
 
 mongoose.connect(DB_ADDRESS, {
   useNewUrlParser: true,

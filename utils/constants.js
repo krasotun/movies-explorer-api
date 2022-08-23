@@ -42,6 +42,14 @@ const VAL_ERR = 'ValidationError';
 const CAST_ERR = 'CastError';
 const NO_ACCESS_ERR = 'Отказано в доступе';
 
+const ALLOWED_DOMAINS = [
+  'https://api.krasotun.nomoredomains.sbs',
+  'http://api.krasotun.nomoredomains.sbs',
+  'https://krasotun.nomoredomains.sbs',
+  'http://krasotun.nomoredomains.sbs',
+  'http://localhost:3000',
+];
+
 module.exports = {
   PORT,
   DB_ADDRESS,
@@ -59,4 +67,5 @@ module.exports = {
   CAST_ERR,
   NO_ACCESS_ERR,
   NOT_FOUND_MOVIE_ERR,
+  ALLOWED_DOMAINS,
 };
