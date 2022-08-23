@@ -5,6 +5,8 @@ const BadRequestError = require('../errors/bad-request-error');
 const DuplicateDataError = require('../errors/duplicate-data-error');
 const { BAD_REQ_MSG, DUPLICATE_DATA_MSG, VAL_ERR } = require('../utils/constants');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
+
 const createUser = (req, res, next) => {
   const { email, name } = req.body;
   bcrypt.hash(req.body.password, 10)
@@ -32,7 +34,11 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
+      const token = jwt.sign(
+        { _id: user._id },
+        NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key',
+        { expiresIn: '7d' },
+      );
       res.status(200).send({ token });
     })
     .catch(next);
