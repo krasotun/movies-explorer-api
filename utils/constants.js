@@ -41,6 +41,7 @@ const NOT_FOUND_MOVIE_ERR = 'Фильм не найден в базе данны
 const VAL_ERR = 'ValidationError';
 const CAST_ERR = 'CastError';
 const NO_ACCESS_ERR = 'Отказано в доступе';
+const URL_ERR = 'Не является URL-ссылкой';
 
 const ALLOWED_DOMAINS = [
   'https://api.krasotun.nomoredomains.sbs',
@@ -68,4 +69,5 @@ module.exports = {
   NO_ACCESS_ERR,
   NOT_FOUND_MOVIE_ERR,
   ALLOWED_DOMAINS,
+  URL_ERR,
 };

@@ -20,6 +20,7 @@ const createMovie = (req, res, next) => {
       } else if (error.code === 11000) {
         throw new DuplicateDataError(DUPLICATE_DATA_MSG);
       }
+      next(error);
     })
     .catch(next);
 };

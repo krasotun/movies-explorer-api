@@ -1,26 +1,29 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
+require('dotenv').config();
 const cors = require('cors');
 const {
   PORT, DB_ADDRESS, SRV_SIDE_ERR, ALLOWED_DOMAINS,
 } = require('./utils/constants');
-const { createUser, login } = require('./controllers/users');
 const usersRouter = require('./routes/users');
 const moviesRouter = require('./routes/movies');
 const errorRouter = require('./routes/error');
+const loginRouter = require('./routes/login');
 const auth = require('./middlewares/auth');
-const { validateSignup, validateSignin } = require('./middlewares/validator');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const rateLimiter = require('./middlewares/rateLimit');
 
 const app = express();
+
 app.use(cors({
   origin: ALLOWED_DOMAINS,
 }));
 
 mongoose.connect(DB_ADDRESS, {
   useNewUrlParser: true,
+  autoIndex: true,
+  useUnifiedTopology: true,
 });
 
 app.use(express.json());
@@ -28,11 +31,13 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(requestLogger);
 app.use(rateLimiter);
-app.post('/signup', validateSignup, createUser);
-app.post('/signin', validateSignin, login);
 
-app.use('/', auth, usersRouter);
-app.use('/', auth, moviesRouter);
+app.use('/', loginRouter);
+
+app.use(auth);
+app.use('/', usersRouter);
+app.use('/', moviesRouter);
+
 app.all('*', errorRouter);
 
 app.use(errorLogger);
