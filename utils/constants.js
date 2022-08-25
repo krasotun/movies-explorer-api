@@ -1,5 +1,5 @@
 const PORT = 3000;
-const DB_ADDRESS = 'mongodb://localhost:27017/moviesdb';
+const DB_DEV_ADDRESS = 'mongodb://localhost:27017/moviesdb';
 
 const USER_SCHEMA_REQ_MSGS = {
   EMAIL: 'Электронная почта (e-mail)  явлется обязательным полем для заполнения',
@@ -53,7 +53,7 @@ const ALLOWED_DOMAINS = [
 
 module.exports = {
   PORT,
-  DB_ADDRESS,
+  DB_DEV_ADDRESS,
   USER_SCHEMA_REQ_MSGS,
   USER_SCHEMA_VAL_MSGS,
   MOVIE_SCHEMA_REQ_MSGS,

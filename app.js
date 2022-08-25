@@ -4,8 +4,10 @@ const { errors } = require('celebrate');
 require('dotenv').config();
 const cors = require('cors');
 const {
-  PORT, DB_ADDRESS, SRV_SIDE_ERR, ALLOWED_DOMAINS,
+  PORT, DB_DEV_ADDRESS, SRV_SIDE_ERR, ALLOWED_DOMAINS,
 } = require('./utils/constants');
+
+const { NODE_ENV, DB_PROD_ADDRESS } = process.env;
 const usersRouter = require('./routes/users');
 const moviesRouter = require('./routes/movies');
 const errorRouter = require('./routes/error');
@@ -20,7 +22,7 @@ app.use(cors({
   origin: ALLOWED_DOMAINS,
 }));
 
-mongoose.connect(DB_ADDRESS, {
+mongoose.connect(NODE_ENV === 'production' ? DB_PROD_ADDRESS : DB_DEV_ADDRESS, {
   useNewUrlParser: true,
   autoIndex: true,
   useUnifiedTopology: true,

@@ -47,7 +47,6 @@ const getCurrentUserInfo = (req, res, next) => {
   const userId = req.user._id;
   return User.findById(userId)
     .then((data) => {
-      console.log(data);
       res.status(200).send({
         email: data.email,
         name: data.name,
@@ -63,9 +62,10 @@ const changeCurrentUserInfo = (req, res, next) => {
       res.status(200).send(user);
     })
     .catch((error) => {
-      console.log(error);
       if (error.name === VAL_ERR) {
         throw new BadRequestError(BAD_REQ_MSG);
+      } else if (error.code === 11000) {
+        throw new DuplicateDataError(DUPLICATE_DATA_MSG);
       }
       next(error);
     })
