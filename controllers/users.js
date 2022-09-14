@@ -47,10 +47,7 @@ const getCurrentUserInfo = (req, res, next) => {
   const userId = req.user._id;
   return User.findById(userId)
     .then((data) => {
-      res.status(200).send({
-        email: data.email,
-        name: data.name,
-      });
+      res.status(200).send(data);
     })
     .catch(next);
 };
