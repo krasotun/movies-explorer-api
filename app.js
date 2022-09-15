@@ -2,9 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 require('dotenv').config();
-const cors = require('cors');
+// const cors = require('cors');
 const {
-  PORT, DB_DEV_ADDRESS, SRV_SIDE_ERR, ALLOWED_DOMAINS,
+  PORT, DB_DEV_ADDRESS, SRV_SIDE_ERR,
 } = require('./utils/constants');
 
 const { NODE_ENV, DB_PROD_ADDRESS } = process.env;
@@ -18,9 +18,9 @@ const rateLimiter = require('./middlewares/rateLimit');
 
 const app = express();
 
-app.use(cors({
-  origin: ALLOWED_DOMAINS,
-}));
+// app.use(cors({
+//   origin: ALLOWED_DOMAINS,
+// }));
 
 mongoose.connect(NODE_ENV === 'production' ? DB_PROD_ADDRESS : DB_DEV_ADDRESS, {
   useNewUrlParser: true,
