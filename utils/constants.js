@@ -49,6 +49,7 @@ const ALLOWED_DOMAINS = [
   'https://krasotun.nomoredomains.sbs',
   'http://krasotun.nomoredomains.sbs',
   'http://localhost:3000',
+  'http://localhost:3001',
 ];
 
 module.exports = {

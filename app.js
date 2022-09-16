@@ -1,8 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const { errors } = require('celebrate');
+const { errors, isCelebrateError } = require('celebrate');
 require('dotenv').config();
 const cors = require('cors');
+const bodyParser = require('body-parser');
 const {
   PORT, DB_DEV_ADDRESS, SRV_SIDE_ERR, ALLOWED_DOMAINS,
 } = require('./utils/constants');
@@ -21,15 +22,13 @@ const app = express();
 app.use(cors({
   origin: ALLOWED_DOMAINS,
 }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect(NODE_ENV === 'production' ? DB_PROD_ADDRESS : DB_DEV_ADDRESS, {
   useNewUrlParser: true,
-  autoIndex: true,
   useUnifiedTopology: true,
 });
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 app.use(requestLogger);
 app.use(rateLimiter);
@@ -43,6 +42,14 @@ app.use('/', moviesRouter);
 app.all('*', errorRouter);
 
 app.use(errorLogger);
+// middleware to log Celebrate validation errors
+app.use((err, req, res, next) => {
+  if (isCelebrateError(err)) {
+    console.error(err);
+  }
+  next(err);
+});
+
 app.use(errors());
 
 app.use((err, req, res, next) => {

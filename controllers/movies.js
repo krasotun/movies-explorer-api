@@ -15,7 +15,6 @@ const createMovie = (req, res, next) => {
       res.status(201).send(data);
     })
     .catch((error) => {
-      console.log(error);
       if (error.name === VAL_ERR) {
         throw new BadRequestError(BAD_REQ_MSG);
       } else if (error.code === 11000) {
